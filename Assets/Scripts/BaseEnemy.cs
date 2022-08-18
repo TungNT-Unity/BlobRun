@@ -26,7 +26,7 @@ public class BaseEnemy : MonoBehaviour,IHealth
     
     protected virtual void Start()
     {
-        Init(PlayerController.Instance.transform,1);
+        Init(PlayerController.Instance.transform,100);
         _canAction = true;
     }
 

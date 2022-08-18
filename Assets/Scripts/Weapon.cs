@@ -14,7 +14,7 @@ public class Weapon : MonoBehaviour
 
     public void Fire()
     {
-        
+        StartCoroutine(StartWave());
     }
 
     IEnumerator StartWave()
@@ -27,7 +27,8 @@ public class Weapon : MonoBehaviour
             {
                 Transform cloneProjectile = Instantiate(projectilePrefabs);
                 cloneProjectile.position = firePoint.position;
-                //cloneProjectile.rotation = Quaternion.LookRotation()
+                cloneProjectile.rotation = Quaternion.AngleAxis(minAngel + angleStep * j, Vector3.up);
+                cloneProjectile.gameObject.SetActive(true);
             }
             yield return new WaitForSeconds(delayWave);
         }
