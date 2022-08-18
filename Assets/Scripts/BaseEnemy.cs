@@ -5,37 +5,41 @@ using PathologicalGames;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class BaseEnemy : MonoBehaviour,IHealth
 {
-    [SerializeField] private Transform model;
-    [SerializeField] private GameObject explosionObj;
+    [SerializeField] protected Transform model;
+    [SerializeField] protected GameObject explosionObj;
     public Animator animator; 
     [HideInInspector] public float lastTouchTime;
     [HideInInspector] public float hp;
-    [SerializeField] private Rigidbody _rigidbody;
-    [SerializeField] private Collider _myMainCollider;
-    [SerializeField] private Item dollarItem;
-    [SerializeField] private float attackRange = 5f;
+    [SerializeField] protected Rigidbody _rigidbody;
+    [SerializeField] protected Collider _myMainCollider;
+    [SerializeField] protected Item dollarItem;
+    [SerializeField] protected float attackRange = 5f;
+    [HideInInspector] public MyMonsterEvent OnDeadEvent = new MyMonsterEvent();
     private Transform _target;
     private Collider[] _allMyCollider;
-    private void Start()
+    protected bool _canAction = false;
+    
+    protected virtual void Start()
     {
         Init(PlayerController.Instance.transform,1);
+        _canAction = true;
     }
 
     public void Init(Transform target,int hp)
     {
-        if(_allMyCollider == null)
-            _allMyCollider = animator.GetComponentsInChildren<Collider>(true);
+        //if(_allMyCollider == null)
+          //  _allMyCollider = animator.GetComponentsInChildren<Collider>(true);
         _target = target;
         this.hp = hp;
-        OnActiveRagdoll(false);
     }
 
 
-    public void OnActiveRagdoll(bool isActive)
+    /*public void OnActiveRagdoll(bool isActive)
     {
         foreach (var col in _allMyCollider)
         {
@@ -52,11 +56,11 @@ public class BaseEnemy : MonoBehaviour,IHealth
     {
         _rigidbody.AddForce(dir,ForceMode.Impulse);
         
-    }
+    }*/
 
-    private void Update()
+    protected virtual void Update()
     {
-        if(hp <= 0)
+        if(!_canAction || hp <= 0)
             return;
         Vector3 dir =_target.position - transform.position;
         if (Vector3.SqrMagnitude(dir) < attackRange*attackRange)
@@ -68,15 +72,19 @@ public class BaseEnemy : MonoBehaviour,IHealth
 
     public void OnDamage(int amount)
     {
-        if (hp <= 0)
+        if (!_canAction || hp <= 0)
             return;
         hp -= amount;
         UIManager.Instance.CreateHpTextFloat(amount, transform.position + Vector3.up);
         if (hp <= 0)
         {
+            Transform cloneExplosion = PoolManager.Pools["Pool"].Spawn("GrenadeExplosionFire", transform.position + Vector3.up, quaternion.identity);
+            cloneExplosion.gameObject.SetActive(true);
+            gameObject.SetActive(false);
+            OnDeadEvent.Invoke(this);
             //DropItem();
-            OnActiveRagdoll(true);
-            StartCoroutine(DelayDeath());
+            //OnActiveRagdoll(true);
+            //StartCoroutine(DelayDeath());
         }
     }
 
@@ -106,4 +114,9 @@ public class BaseEnemy : MonoBehaviour,IHealth
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position,attackRange);
     }
+}
+
+[Serializable]
+public class MyMonsterEvent : UnityEvent<BaseEnemy>
+{
 }

@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour,IHealth
     [SerializeField] private CamPosInfo[] camPosInfos;
     [SerializeField] private CinemachineVirtualCamera runningCam;
     [SerializeField] private CinemachineVirtualCamera battleCam;
+    public Transform transformFollowPlayer;
     public CharacterMovementController playerMovement;
     private bool _isRunningCam = true;
     

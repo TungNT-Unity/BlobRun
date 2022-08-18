@@ -94,12 +94,10 @@ public class CharacterMovementController : MonoBehaviour
     {
         int layerMask = 1 << 11;
         RaycastHit hit;
-        // Does the ray intersect any objects excluding the player layer
         if (Physics.Raycast(transform.position + Vector3.up, Vector3.forward, out hit, 5, layerMask))
         {
             int layerMaskNextGround = 1 << 10;
             RaycastHit hitNextGround;
-            // Does the ray intersect any objects excluding the player layer
             if (Physics.Raycast(transform.position + Vector3.down + Vector3.forward * 2f, Vector3.forward, out hitNextGround, 500, layerMaskNextGround))
             {
                 _isJumping = true;
