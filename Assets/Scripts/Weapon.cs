@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PathologicalGames;
 
 public class Weapon : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class Weapon : MonoBehaviour
             float angleStep = angle / projectileNumber;
             for (int j = 0; j < projectileNumber; j++)
             {
-                Transform cloneProjectile = Instantiate(projectilePrefabs);
+                Transform cloneProjectile = PoolManager.Pools["Pool"].Spawn(projectilePrefabs);
                 cloneProjectile.position = firePoint.position;
                 cloneProjectile.rotation = Quaternion.AngleAxis(minAngel + angleStep * j, Vector3.up);
                 cloneProjectile.gameObject.SetActive(true);

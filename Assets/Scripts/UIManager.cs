@@ -20,9 +20,14 @@ public class UIManager : MonoBehaviour
     {
         Transform cloneHpText = PoolManager.Pools["Pool"].Spawn(hpFloatPrefab);
         cloneHpText.SetParent(transform);
+        cloneHpText.SetAsLastSibling();
         cloneHpText.GetComponentInChildren<TextMeshProUGUI>().text = amount.ToString();
         cloneHpText.localScale = Vector3.one;
         cloneHpText.position = mainCam.WorldToScreenPoint(pos + Vector3.up * 3f);
+        RectTransform rectTransform = cloneHpText.GetComponent<RectTransform>();
+        Vector3 posOnRectTrans = rectTransform.anchoredPosition3D;
+        posOnRectTrans.z = 0f;
+        rectTransform.anchoredPosition3D = posOnRectTrans;
         cloneHpText.gameObject.SetActive(true);
     }
 }

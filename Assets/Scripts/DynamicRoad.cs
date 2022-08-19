@@ -35,6 +35,7 @@ public class DynamicRoad : Road
     public override void OnPlayerOutRoad()
     {
         base.OnPlayerOutRoad();
+        Debug.LogError("OnPlayerOutRoad");
         battleTrigger.OnEndBattleEvent.RemoveListener(OnPlayerOutRoad);
         Transform lastestActiveRoad = listRoadActive[listRoadActive.Count - 1];
         Vector3 targetPos = lastestActiveRoad.position + lastestActiveRoad.forward * (_loopRoadScaleZ*.5f + endRoadGameObject.transform.localScale.z*.5f);
@@ -48,7 +49,7 @@ public class DynamicRoad : Road
     {
         if(!_isPlayerOnRoad)
             return;
-        if (Vector3.Distance(PlayerController.Instance.transform.position, listRoadActive[listRoadActive.Count - 1].position) < 30f)
+        if (Vector3.Distance(PlayerController.Instance.transform.position, listRoadActive[listRoadActive.Count - 1].position) < 80f)
         {
             SpawnNextRoad(1);
         }

@@ -14,13 +14,12 @@ public class ProjectileBase : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        
         IHealth targetHeal = other.GetComponent<IHealth>();
         if (targetHeal != null)
         {
             TargetHit targetHit = new TargetHit();
             targetHit.Health = targetHeal;
-            targetHit.Timer = 0.5f;
+            targetHit.Timer = 0.2f;
             targetHeal.OnDamage(damage);
             //animator.GetBoneTransform(HumanBodyBones.Hips).GetComponent<Rigidbody>().AddForce((transform.position - _target.position).normalized*Random.Range(50f,100f) + Vector3.up*Random.Range(200f,500f),ForceMode.Impulse);
             _currentTarget = other.transform;
