@@ -9,6 +9,7 @@ public class ProjectileBase : MonoBehaviour
     [SerializeField] private int damage;
     public float speed;
     [SerializeField] private GameObject destroyFx;
+    [SerializeField] private bool isDestroyOnHit = true;
     public List<int> projectileProperties;
     private Transform _currentTarget;
     
@@ -36,7 +37,12 @@ public class ProjectileBase : MonoBehaviour
                 //Pull target
             }
 
-            
+            if (isDestroyOnHit)
+            {
+                PoolManager.Pools["Pool"].Despawn(transform);
+            }
+
+
         }
     }
 

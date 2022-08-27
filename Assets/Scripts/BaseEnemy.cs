@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using PathologicalGames;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -23,6 +24,7 @@ public class BaseEnemy : MonoBehaviour,IHealth
     private Transform _target;
     private Collider[] _allMyCollider;
     protected bool _canAction = false;
+    private Sequence mySequence;
     
     protected virtual void Start()
     {
@@ -74,6 +76,11 @@ public class BaseEnemy : MonoBehaviour,IHealth
     {
         if (!_canAction || hp <= 0)
             return;
+        if(mySequence != null)
+            mySequence.Complete();
+        mySequence = DOTween.Sequence();
+        mySequence.Append(transform.DOPunchScale(Vector3.one*.2f,.1f,1));
+        mySequence.Play();
         hp -= amount;
         UIManager.Instance.CreateHpTextFloat(amount, transform.position + Vector3.up);
         if (hp <= 0)
