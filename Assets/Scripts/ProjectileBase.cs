@@ -76,4 +76,7 @@ public class ProjectileBase : MonoBehaviour
         Transform cloneExplosion = PoolManager.Pools["Pool"].Spawn(destroyFx, transform.position, Quaternion.identity);
         cloneExplosion.gameObject.SetActive(true);
     }
+
+
+    
 }

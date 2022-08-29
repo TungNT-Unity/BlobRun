@@ -9,7 +9,7 @@ public class Road : MonoBehaviour
     public int id;
     protected bool _isPlayerOnRoad = false;
     [HideInInspector] public MyIntFloatEvent OnSpawnRoadEvent;
-    
+
     public virtual void OnPlayerTriggerOnRoad()
     {
         if(_isPlayerOnRoad)
